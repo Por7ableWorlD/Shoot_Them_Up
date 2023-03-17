@@ -22,7 +22,7 @@ void ABaseGeometryActor::BeginPlay()
 	//OutputStatToLogs();
 
 	// Вызываем метод для вывода чего-либо на экран игрока в игре
-	PrintBaseInfoInGame();
+	//PrintBaseInfoInGame();
 }
 
 // Called every frame
@@ -33,12 +33,6 @@ void ABaseGeometryActor::Tick(float DeltaTime)
 
 void ABaseGeometryActor::OutputBaseLogs()
 {
-	int WeaponNum = 5;
-	int KillsNum = 7;
-	float Health = 54.2351f;
-	bool isDead = false;
-	bool HasWeapon = true;
-
 	UE_LOG(LogTemp, Display, TEXT("Weapon number = %d"), WeaponNum);
 	UE_LOG(LogTemp, Display, TEXT("Kills number = %i"), KillsNum);
 	UE_LOG(LogTemp, Display, TEXT("Health = %f"), Health);
@@ -51,10 +45,6 @@ void ABaseGeometryActor::OutputStatToLogs()
 {
 	FString Name = "John Connor";
 	UE_LOG(LogBaseGeometry, Display, TEXT("Name: %s"), *Name);
-
-	int WeaponNum = 5;
-	float Health = 54.2351f;
-	bool isDead = false;
 
 	FString WeaponNumStr = "Weapons num = " + FString::FromInt(WeaponNum);
 	FString HealthStr = "Health = " + FString::SanitizeFloat(Health);
