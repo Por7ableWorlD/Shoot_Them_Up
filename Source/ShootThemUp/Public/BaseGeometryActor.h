@@ -25,4 +25,5 @@ public:
 
 	void OutputBaseLogs();
 	void OutputStatToLogs();
+	void PrintBaseInfoInGame();
 };
