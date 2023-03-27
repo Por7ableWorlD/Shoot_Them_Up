@@ -8,21 +8,27 @@ DEFINE_LOG_CATEGORY_STATIC(LogBaseGeometry, All, All)
 // Sets default values
 ABaseGeometryActor::ABaseGeometryActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>("BaseMesh");
+	SetRootComponent(BaseMesh);
 }
 
 // Called when the game starts or when spawned
 void ABaseGeometryActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	// Call base metods for UE_LOG()
 	//OutputBaseLogs();
 	//OutputStatToLogs();
 
 	// Call metod for print something to player's screen
 	//PrintBaseInfoInGame();
+
+	// Call metod for print transform info
+	PrintTransform();
 }
 
 // Called every frame
@@ -61,5 +67,27 @@ void ABaseGeometryActor::PrintBaseInfoInGame()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, "Name");
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Stat", true, FVector2D(1.5f, 1.5f));
+}
+
+void ABaseGeometryActor::PrintTransform()
+{
+	FTransform Transform = GetActorTransform();
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
+	FVector Scale = Transform.GetScale3D();
+
+	UE_LOG(LogBaseGeometry, Warning, TEXT("Actor name: %s"), *GetName());
+
+	UE_LOG(LogBaseGeometry, Display, TEXT(" \nTransform: %s"), *Transform.ToString());
+	UE_LOG(LogBaseGeometry, Display, TEXT("Location: %s"), *Location.ToString());
+	UE_LOG(LogBaseGeometry, Display, TEXT("Rotation: %s"), *Rotation.ToString());
+	UE_LOG(LogBaseGeometry, Display, TEXT("Scale: %s"), *Scale.ToString());
+
+	// We can use anouther variant to get all Transform components
+	/*FVector Location = GetActorLocation();
+	FRotator Rotation = GetActorRotation();
+	FVector Scale = GetActorScale3D();*/
+
+	UE_LOG(LogBaseGeometry, Error, TEXT(" \nTransform: %s\n "), *Transform.ToHumanReadableString());
 }
 

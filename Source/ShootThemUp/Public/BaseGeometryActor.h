@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
 #include "BaseGeometryActor.generated.h"
 
 UCLASS()
@@ -14,6 +15,9 @@ class SHOOTTHEMUP_API ABaseGeometryActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABaseGeometryActor();
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* BaseMesh;
 
 protected:
 	// Called when the game starts or when spawned
@@ -41,7 +45,9 @@ public:
 	// Base metods for UE_LOG()
 	void OutputBaseLogs();
 	void OutputStatToLogs();
-
 	// and print something to palyer's screen
 	void PrintBaseInfoInGame();
+
+	// Base metod for print transform metods
+	void PrintTransform();
 };
