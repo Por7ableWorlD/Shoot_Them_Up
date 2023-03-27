@@ -17,11 +17,11 @@ void ABaseGeometryActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	// Вызываем базовые методы по работе с UE_LOG()
+	// Call base metods for UE_LOG()
 	//OutputBaseLogs();
 	//OutputStatToLogs();
 
-	// Вызываем метод для вывода чего-либо на экран игрока в игре
+	// Call metod for print something to player's screen
 	//PrintBaseInfoInGame();
 }
 
@@ -33,12 +33,13 @@ void ABaseGeometryActor::Tick(float DeltaTime)
 
 void ABaseGeometryActor::OutputBaseLogs()
 {
-	UE_LOG(LogTemp, Display, TEXT("Weapon number = %d"), WeaponNum);
-	UE_LOG(LogTemp, Display, TEXT("Kills number = %i"), KillsNum);
-	UE_LOG(LogTemp, Display, TEXT("Health = %f"), Health);
-	UE_LOG(LogTemp, Display, TEXT("Health = %.2f"), Health);
-	UE_LOG(LogTemp, Display, TEXT("isDead = %d"), isDead);
-	UE_LOG(LogTemp, Display, TEXT("HasWeapon = %d"), static_cast<int>(HasWeapon));
+	UE_LOG(LogBaseGeometry, Warning, TEXT("Actor name: %s"), *GetName());
+	UE_LOG(LogBaseGeometry, Display, TEXT("Weapon number = %d"), WeaponNum);
+	UE_LOG(LogBaseGeometry, Display, TEXT("Kills number = %i"), KillsNum);
+	UE_LOG(LogBaseGeometry, Display, TEXT("Health = %f"), Health);
+	UE_LOG(LogBaseGeometry, Display, TEXT("Health = %.2f"), Health);
+	UE_LOG(LogBaseGeometry, Display, TEXT("isDead = %d"), isDead);
+	UE_LOG(LogBaseGeometry, Display, TEXT("HasWeapon = %d"), static_cast<int>(HasWeapon));
 }
 
 void ABaseGeometryActor::OutputStatToLogs()

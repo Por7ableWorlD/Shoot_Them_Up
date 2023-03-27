@@ -38,9 +38,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Базовые методы по работе с логами
-	//		и выводом информации на игровой экран
+	// Base metods for UE_LOG()
 	void OutputBaseLogs();
 	void OutputStatToLogs();
+
+	// and print something to palyer's screen
 	void PrintBaseInfoInGame();
 };
