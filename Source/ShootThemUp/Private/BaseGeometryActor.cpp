@@ -20,6 +20,8 @@ void ABaseGeometryActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	InitialLocation = GetActorLocation();
+
 	// Call base metods for UE_LOG()
 	//OutputBaseLogs();
 	//OutputStatToLogs();
@@ -28,13 +30,15 @@ void ABaseGeometryActor::BeginPlay()
 	//PrintBaseInfoInGame();
 
 	// Call metod for print transform info
-	PrintTransform();
+	//PrintTransform();
 }
 
 // Called every frame
 void ABaseGeometryActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	SinMovement();
 }
 
 void ABaseGeometryActor::OutputBaseLogs()
@@ -69,12 +73,17 @@ void ABaseGeometryActor::PrintBaseInfoInGame()
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Stat", true, FVector2D(1.5f, 1.5f));
 }
 
-void ABaseGeometryActor::PrintTransform()
+void ABaseGeometryActor::PrintTransformInfo()
 {
 	FTransform Transform = GetActorTransform();
 	FVector Location = Transform.GetLocation();
 	FRotator Rotation = Transform.Rotator();
 	FVector Scale = Transform.GetScale3D();
+
+	// We can use anouther variant to get all Transform components
+	/*FVector Location = GetActorLocation();
+	FRotator Rotation = GetActorRotation();
+	FVector Scale = GetActorScale3D();*/
 
 	UE_LOG(LogBaseGeometry, Warning, TEXT("Actor name: %s"), *GetName());
 
@@ -83,11 +92,23 @@ void ABaseGeometryActor::PrintTransform()
 	UE_LOG(LogBaseGeometry, Display, TEXT("Rotation: %s"), *Rotation.ToString());
 	UE_LOG(LogBaseGeometry, Display, TEXT("Scale: %s"), *Scale.ToString());
 
-	// We can use anouther variant to get all Transform components
-	/*FVector Location = GetActorLocation();
-	FRotator Rotation = GetActorRotation();
-	FVector Scale = GetActorScale3D();*/
-
 	UE_LOG(LogBaseGeometry, Error, TEXT(" \nTransform: %s\n "), *Transform.ToHumanReadableString());
+}
+
+void ABaseGeometryActor::SinMovement()
+{
+	// Number of seconds since the start of the game
+		// GetWorld() return the world object, which has any actors
+	float Time = GetWorld()->GetTimeSeconds();
+
+	// Got new current actor location right mow
+	FVector CurrentLocation = GetActorLocation();
+
+	// Calculate new Z actor location using the formula:
+		// z = z0 + amplitude * sin(freq * t)
+	CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Frequency * Time);
+
+	// Set new location to actor
+	SetActorLocation(CurrentLocation);
 }
 

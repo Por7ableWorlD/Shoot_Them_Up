@@ -12,14 +12,19 @@ class SHOOTTHEMUP_API ABaseGeometryActor : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:
+
 	// Sets default values for this actor's properties
 	ABaseGeometryActor();
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
 protected:
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -38,9 +43,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	bool HasWeapon = true;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	// How much the actor will deviate from a initial point
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float Amplitude = 50.0f;
+	
+	// Oscillation frequency
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float Frequency = 2.0f;
+
+private:
+
+	FVector InitialLocation;
 
 	// Base metods for UE_LOG()
 	void OutputBaseLogs();
@@ -49,5 +62,8 @@ public:
 	void PrintBaseInfoInGame();
 
 	// Base metod for print transform metods
-	void PrintTransform();
+	void PrintTransformInfo();
+
+	// Make actor Sin movement
+	void SinMovement();
 };
