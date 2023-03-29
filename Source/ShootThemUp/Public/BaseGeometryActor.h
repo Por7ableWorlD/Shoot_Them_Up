@@ -7,6 +7,30 @@
 #include "Components/StaticMeshComponent.h"
 #include "BaseGeometryActor.generated.h"
 
+UENUM(BlueprintType)
+enum class EMovementType : uint8
+{
+	Sin,
+	Static
+};
+
+USTRUCT(BlueprintType)
+struct FGeometryData
+{
+	GENERATED_USTRUCT_BODY()
+
+	// How much the actor will deviate from a initial point
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float Amplitude = 50.0f;
+	
+	// Oscillation frequency
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float Frequency = 2.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	EMovementType MoveType = EMovementType::Static;
+};
+
 UCLASS()
 class SHOOTTHEMUP_API ABaseGeometryActor : public AActor
 {
@@ -43,13 +67,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	bool HasWeapon = true;
 
-	// How much the actor will deviate from a initial point
-	UPROPERTY(EditAnywhere, Category = "Movement")
-	float Amplitude = 50.0f;
-	
-	// Oscillation frequency
-	UPROPERTY(EditAnywhere, Category = "Movement")
-	float Frequency = 2.0f;
+	UPROPERTY(EditAnywhere, Category = "Geometry Data")
+	FGeometryData GeomeryData;
 
 private:
 
@@ -63,6 +82,9 @@ private:
 
 	// Base metod for print transform metods
 	void PrintTransformInfo();
+
+	// Set actor movement
+	void HandleMovement();
 
 	// Make actor Sin movement
 	void SinMovement();

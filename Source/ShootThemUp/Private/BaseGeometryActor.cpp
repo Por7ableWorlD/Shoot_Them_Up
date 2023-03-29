@@ -38,7 +38,7 @@ void ABaseGeometryActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	SinMovement();
+	HandleMovement();
 }
 
 void ABaseGeometryActor::OutputBaseLogs()
@@ -95,6 +95,26 @@ void ABaseGeometryActor::PrintTransformInfo()
 	UE_LOG(LogBaseGeometry, Error, TEXT(" \nTransform: %s\n "), *Transform.ToHumanReadableString());
 }
 
+void ABaseGeometryActor::HandleMovement()
+{
+	switch (GeomeryData.MoveType)
+	{
+	case EMovementType::Sin:
+	{
+		SinMovement();
+		break;
+	}
+	case EMovementType::Static:
+	{
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
+}
+
 void ABaseGeometryActor::SinMovement()
 {
 	// Number of seconds since the start of the game
@@ -106,7 +126,7 @@ void ABaseGeometryActor::SinMovement()
 
 	// Calculate new Z actor location using the formula:
 		// z = z0 + amplitude * sin(freq * t)
-	CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Frequency * Time);
+	CurrentLocation.Z = InitialLocation.Z + GeomeryData.Amplitude * FMath::Sin(GeomeryData.Frequency * Time);
 
 	// Set new location to actor
 	SetActorLocation(CurrentLocation);
