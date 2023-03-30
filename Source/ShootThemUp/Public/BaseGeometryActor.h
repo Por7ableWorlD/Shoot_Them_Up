@@ -85,7 +85,6 @@ private:
 
 	// Set actor movement
 	void HandleMovement();
-
 	// Make actor Sin movement
 	void SinMovement();
 };
