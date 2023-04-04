@@ -29,6 +29,17 @@ struct FGeometryData
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	EMovementType MoveType = EMovementType::Static;
+
+	UPROPERTY(EditAnywhere, Category = "Design")
+	FLinearColor Color = FLinearColor::Black;
+
+	UPROPERTY(EditAnywhere, Category = "Design")
+	float TimerRate_ChangeMaterialColor = 3.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Design")
+	int32 MaxCount_ChangeMaterialColor = 5;
+
+	int32 CurrentCount_ChangeMaterialColor = 0;
 };
 
 UCLASS()
@@ -68,11 +79,13 @@ protected:
 	bool HasWeapon = true;
 
 	UPROPERTY(EditAnywhere, Category = "Geometry Data")
-	FGeometryData GeomeryData;
+	FGeometryData GeometryData;
 
 private:
 
 	FVector InitialLocation;
+
+	FTimerHandle ChangeMaterialColorTimer;
 
 	// Base metods for UE_LOG()
 	void OutputBaseLogs();
@@ -83,8 +96,13 @@ private:
 	// Base metod for print transform metods
 	void PrintTransformInfo();
 
-	// Set actor movement
+	// Set actor stop/movement
 	void HandleMovement();
 	// Make actor Sin movement
 	void SinMovement();
+
+	// Set color to BaseMesh
+	void SetColor(const FLinearColor& Color);
+
+	void OnChangeMaterialColorTimerFired();
 };

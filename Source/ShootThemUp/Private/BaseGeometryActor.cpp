@@ -2,6 +2,8 @@
 
 #include "BaseGeometryActor.h"
 #include "Engine/Engine.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "TimerManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseGeometry, All, All)
 
@@ -31,6 +33,13 @@ void ABaseGeometryActor::BeginPlay()
 
 	// Call metod for print transform info
 	//PrintTransform();
+
+	// Call metod for create new material instanse and set color for it
+	//SetColor(GeometryData.Color);
+
+	// Create ChangeMaterialColorTimer and set base settings
+	GetWorldTimerManager().SetTimer(ChangeMaterialColorTimer, this, 
+		&ABaseGeometryActor::OnChangeMaterialColorTimerFired, GeometryData.TimerRate_ChangeMaterialColor, true);
 }
 
 // Called every frame
@@ -97,7 +106,7 @@ void ABaseGeometryActor::PrintTransformInfo()
 
 void ABaseGeometryActor::HandleMovement()
 {
-	switch (GeomeryData.MoveType)
+	switch (GeometryData.MoveType)
 	{
 	case EMovementType::Sin:
 	{
@@ -126,9 +135,39 @@ void ABaseGeometryActor::SinMovement()
 
 	// Calculate new Z actor location using the formula:
 		// z = z0 + amplitude * sin(freq * t)
-	CurrentLocation.Z = InitialLocation.Z + GeomeryData.Amplitude * FMath::Sin(GeomeryData.Frequency * Time);
+	CurrentLocation.Z = InitialLocation.Z + GeometryData.Amplitude * FMath::Sin(GeometryData.Frequency * Time);
 
 	// Set new location to actor
 	SetActorLocation(CurrentLocation);
+}
+
+void ABaseGeometryActor::SetColor(const FLinearColor& Color)
+{
+	// Create new MaterialInstance and set it to first (0 index) material for BaseMesh
+	UMaterialInstanceDynamic* DynMaterial = BaseMesh->CreateAndSetMaterialInstanceDynamic(0);
+	if (DynMaterial)
+	{
+		DynMaterial->SetVectorParameterValue("Color", Color);
+	}
+}
+
+void ABaseGeometryActor::OnChangeMaterialColorTimerFired()
+{
+	if (++GeometryData.CurrentCount_ChangeMaterialColor
+		<= GeometryData.MaxCount_ChangeMaterialColor)
+	{
+		const FLinearColor NewRandomColor = FLinearColor::MakeRandomColor();
+
+		UE_LOG(LogBaseGeometry, Display, TEXT("CurrentCount: %d \nNew random color for BaseMesh: %s"),
+			GeometryData.CurrentCount_ChangeMaterialColor, *NewRandomColor.ToString());
+
+		SetColor(NewRandomColor);
+	}
+	else
+	{
+		GetWorldTimerManager().ClearTimer(ChangeMaterialColorTimer);
+		UE_LOG(LogBaseGeometry, Warning, TEXT("Timer for ChangeMaterialColor has been stopped!"));
+	}
+
 }
 
