@@ -19,7 +19,7 @@ struct FGeometryData
 {
 	GENERATED_USTRUCT_BODY()
 
-	// How much the actor will deviate from a initial point
+	// How much the actor will deviate from an initial point
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float Amplitude = 50.0f;
 	
