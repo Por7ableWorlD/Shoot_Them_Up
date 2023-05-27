@@ -164,8 +164,8 @@ void ABaseGeometryActor::OnChangeMaterialColorTimerFired()
 
 		SetColor(NewRandomColor);
 
-		UE_LOG(LogBaseGeometry, Display, TEXT("CurrentCount: %d \nNew random color for BaseMesh: %s"),
-			GeometryData.CurrentCount_ChangeMaterialColor, *NewRandomColor.ToString());
+		UE_LOG(LogBaseGeometry, Display, TEXT("CurrentCount: %d \nNew random color for BaseMesh: %s \nFor Actor: %s"),
+			GeometryData.CurrentCount_ChangeMaterialColor, *NewRandomColor.ToString(), *GetName());
 	}
 	else
 	{
