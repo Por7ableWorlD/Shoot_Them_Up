@@ -22,6 +22,7 @@ void ABaseGeometryActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Get the initial actor location on the BeginPlay for the next manipulation
 	InitialLocation = GetActorLocation();
 
 	// Call base metods for UE_LOG()
@@ -89,10 +90,13 @@ void ABaseGeometryActor::PrintTransformInfo()
 	FRotator Rotation = Transform.Rotator();
 	FVector Scale = Transform.GetScale3D();
 
-	// We can use anouther variant to get all Transform components
-	/*FVector Location = GetActorLocation();
+	// We can use anouther variant to get all components like above:
+	/*
+	FTransform Transform = GetActorTransform();
+	FVector Location = GetActorLocation();
 	FRotator Rotation = GetActorRotation();
-	FVector Scale = GetActorScale3D();*/
+	FVector Scale = GetActorScale3D();
+	*/
 
 	UE_LOG(LogBaseGeometry, Warning, TEXT("Actor name: %s"), *GetName());
 
@@ -133,7 +137,7 @@ void ABaseGeometryActor::SinMovement()
 	// Got new current actor location right mow
 	FVector CurrentLocation = GetActorLocation();
 
-	// Calculate new Z actor location using the formula:
+	// Calculate new Z actor coordinate, using the formula:
 		// z = z0 + amplitude * sin(freq * t)
 	CurrentLocation.Z = InitialLocation.Z + GeometryData.Amplitude * FMath::Sin(GeometryData.Frequency * Time);
 
@@ -158,10 +162,10 @@ void ABaseGeometryActor::OnChangeMaterialColorTimerFired()
 	{
 		const FLinearColor NewRandomColor = FLinearColor::MakeRandomColor();
 
+		SetColor(NewRandomColor);
+
 		UE_LOG(LogBaseGeometry, Display, TEXT("CurrentCount: %d \nNew random color for BaseMesh: %s"),
 			GeometryData.CurrentCount_ChangeMaterialColor, *NewRandomColor.ToString());
-
-		SetColor(NewRandomColor);
 	}
 	else
 	{

@@ -82,7 +82,8 @@ protected:
 	FGeometryData GeometryData;
 
 private:
-
+	
+	// Initial actor location
 	FVector InitialLocation;
 
 	FTimerHandle ChangeMaterialColorTimer;
@@ -90,7 +91,8 @@ private:
 	// Base metods for UE_LOG()
 	void OutputBaseLogs();
 	void OutputStatToLogs();
-	// and print something to palyer's screen
+
+	// Print something to palyer's screen
 	void PrintBaseInfoInGame();
 
 	// Base metod for print transform metods
@@ -104,5 +106,7 @@ private:
 	// Set color to BaseMesh
 	void SetColor(const FLinearColor& Color);
 
+	// Event for change actor material color.
+		// It's called automatically in the timer
 	void OnChangeMaterialColorTimerFired();
 };
