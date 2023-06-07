@@ -36,7 +36,7 @@ void ABaseGeometryActor::BeginPlay()
 	//PrintTransform();
 
 	// Call metod for create new material instanse and set color for it
-	//SetColor(GeometryData.Color);
+	SetColor(GeometryData.Color);
 
 	// Create ChangeMaterialColorTimer and set base settings
 	GetWorldTimerManager().SetTimer(ChangeMaterialColorTimer, this, 
@@ -79,8 +79,11 @@ void ABaseGeometryActor::OutputStatToLogs()
 
 void ABaseGeometryActor::PrintBaseInfoInGame()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, "Name");
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Stat", true, FVector2D(1.5f, 1.5f));
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, "Name");
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Stat", true, FVector2D(1.5f, 1.5f));
+	}
 }
 
 void ABaseGeometryActor::PrintTransformInfo()
@@ -130,23 +133,29 @@ void ABaseGeometryActor::HandleMovement()
 
 void ABaseGeometryActor::SinMovement()
 {
-	// Number of seconds since the start of the game
-		// GetWorld() return the world object, which has any actors
-	float Time = GetWorld()->GetTimeSeconds();
+	// GetWorld() return the world object, which has any actors
+	if (GetWorld())
+	{
+		// Number of seconds since the start of the game
+		float Time = GetWorld()->GetTimeSeconds();
 
-	// Got new current actor location right mow
-	FVector CurrentLocation = GetActorLocation();
+		// Got new current actor location right mow
+		FVector CurrentLocation = GetActorLocation();
 
-	// Calculate new Z actor coordinate, using the formula:
-		// z = z0 + amplitude * sin(freq * t)
-	CurrentLocation.Z = InitialLocation.Z + GeometryData.Amplitude * FMath::Sin(GeometryData.Frequency * Time);
+		// Calculate new Z actor coordinate, using the formula:
+			// z = z0 + amplitude * sin(freq * t)
+		CurrentLocation.Z = InitialLocation.Z + GeometryData.Amplitude * FMath::Sin(GeometryData.Frequency * Time);
 
-	// Set new location to actor
-	SetActorLocation(CurrentLocation);
+		// Set new location to actor
+		SetActorLocation(CurrentLocation);
+	}
 }
 
 void ABaseGeometryActor::SetColor(const FLinearColor& Color)
 {
+	// if the BaseMesh poiter is null -> exit from function
+	if (!BaseMesh) return;
+
 	// Create new MaterialInstance and set it to first (0 index) material for BaseMesh
 	UMaterialInstanceDynamic* DynMaterial = BaseMesh->CreateAndSetMaterialInstanceDynamic(0);
 	if (DynMaterial)
